@@ -16,7 +16,7 @@ plt.style.use('blog')
 plt.rcParams['figure.dpi'] = 150
 plt.rcParams['savefig.dpi'] = 150
 plt.rcParams['font.family'] = 'sans-serif'
-plt.rcParams['font.sans-serif'] = 'Ubuntu'
+plt.rcParams['font.sans-serif'] = 'Lato'
 plt.rcParams['font.weight'] = 'regular'
 
 all_nations = [
