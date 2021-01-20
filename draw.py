@@ -42,7 +42,8 @@ long_data = pd.melt(df, id_vars=['Date', 'Name'], var_name='Vaccine Stage',
                     value_name='Cumulative Vaccine Recipients')\
               .sort_values(by=['Name', 'Date'])
 
-days_elapsed = (long_data['Date'].max() - long_data['Date'].min()).days
+latest_date = long_data['Date'].max()
+days_elapsed = (latest_date - long_data['Date'].min()).days
 
 def label_lines(data, col, color, label, formatter=None, *args, **kwargs):
     ax = plt.gca()
@@ -99,12 +100,20 @@ g.map_dataframe(label_lines, col='Cumulative Vaccine Recipients', )
 g.fig.suptitle(
     'UK Covid-19 Vaccine Recipients by Country', weight='bold', size='x-large'
 )
-g.fig.subplots_adjust(top=.93)
+g.fig.subplots_adjust(top=.92)
 
 plt.legend(
-    title='Vaccine Stage', loc='upper center', bbox_to_anchor=(0.5, -0.25), 
-    ncol=2
+    title='Vaccine Stage', loc='upper right', bbox_to_anchor=(1, -0.3), ncol=2
 )
 
 g.set_titles('{row_name}')
+
+g.axes.flatten()[-1].annotate(
+    'Source: coronavirus.data.gov.uk\n'
+    f'Data up to and including {latest_date.strftime("%Y-%m-%d")}\n'
+    'Processing code: github.com/asongtoruin/covid-graphs',
+    xy=(0.05, -0.4), xycoords=('figure fraction', 'axes fraction'), 
+    ha='left', va='top', size='small'
+)
+
 plt.savefig(graph_folder / 'Vaccine count.png', bbox_inches='tight')
