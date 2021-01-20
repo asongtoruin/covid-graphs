@@ -1,0 +1,5 @@
+matplotlib
+pandas
+seaborn
+uk-covid19
+git+https://github.com/asongtoruin/plot_styles#egg=plot_styles
