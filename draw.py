@@ -28,6 +28,7 @@ cases_and_deaths = {
     'Name': 'areaName',
     'First': 'cumPeopleVaccinatedFirstDoseByPublishDate',
     'Second': 'cumPeopleVaccinatedSecondDoseByPublishDate',
+    'Third': 'cumPeopleVaccinatedThirdInjectionByPublishDate'
 }
 
 api = Cov19API(
@@ -53,7 +54,7 @@ def label_lines(data, col, color, label, formatter=None, *args, **kwargs):
     if formatter:
         label = formatter.format_data(last_value)
     else:
-        label = f'{last_value:,}'
+        label = f'{last_value:,.0f}'
     
     ax.annotate(
         text=label, c=color, 
@@ -69,7 +70,7 @@ g = sns.FacetGrid(
 g.map(plt.plot, 'Date', 'Cumulative Vaccine Recipients', zorder=2)
 
 y_fmt = mtick.EngFormatter(sep='', places=None)
-x_fmt = mdates.DateFormatter('%d\n%b')
+x_fmt = mdates.DateFormatter('%d %b %Y')
 
 if days_elapsed < 45:
     x_maj = mdates.WeekdayLocator()
@@ -103,7 +104,8 @@ g.fig.suptitle(
 g.fig.subplots_adjust(top=.92)
 
 plt.legend(
-    title='Vaccine Stage', loc='upper right', bbox_to_anchor=(1, -0.3), ncol=2
+    title='Vaccine Stage', loc='upper right', bbox_to_anchor=(1, -0.2), ncol=3,
+    fontsize='small'
 )
 
 g.set_titles('{row_name}')
@@ -111,6 +113,7 @@ g.set_titles('{row_name}')
 g.axes.flatten()[-1].annotate(
     'Source: coronavirus.data.gov.uk\n'
     f'Data up to and including {latest_date.strftime("%Y-%m-%d")}\n'
+    '"Third" includes third doses given to those with weakened immune systems and boosters.\n'
     'Processing code: github.com/asongtoruin/covid-graphs',
     xy=(0.05, -0.4), xycoords=('figure fraction', 'axes fraction'), 
     ha='left', va='top', size='small'
